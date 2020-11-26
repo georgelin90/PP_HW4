@@ -7,6 +7,7 @@
 #include <math.h>
 int main(int argc, char **argv)
 {
+    long long int circle = 0, temp = 0;
     // --- DON'T TOUCH ---
     MPI_Init(&argc, &argv);
     double start_time = MPI_Wtime();
@@ -14,7 +15,6 @@ int main(int argc, char **argv)
     long long int tosses = atoi(argv[1]);
     int world_rank, world_size;
     // ---
-    long long int circle = 0, temp = 0;
     // TODO: MPI init
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     {
 	    if(world_rank % i == 1)
 		    MPI_Send(&circle, 1, MPI_LONG_LONG, world_rank - i/2, 0, MPI_COMM_WORLD);
-	    else{
+	    else if(world_rank % i == 0){
 		    MPI_Recv(&temp, 1, MPI_LONG_LONG, world_rank + i/2, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		    circle += temp;
 	    }
