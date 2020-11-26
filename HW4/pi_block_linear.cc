@@ -24,8 +24,8 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 	for(int i = 0; i < tosses/world_size; i++)
 	{
-		double x = (double) rand(NULL)/RAND_MAX;
-		double y = (double) rand(NULL)/RAND_MAX;
+		double x = (double) rand()/RAND_MAX;
+		double y = (double) rand()/RAND_MAX;
 		if(x*x + y*y <= 1)
 			circle ++;
         }
@@ -38,8 +38,8 @@ int main(int argc, char **argv)
 	srand(time(NULL));
         for(int i = 0; i < tosses/world_size; i++)
         {
-                double x = (double) rand(NULL)/RAND_MAX;
-                double y = (double) rand(NULL)/RAND_MAX;
+                double x = (double) rand()/RAND_MAX;
+                double y = (double) rand()/RAND_MAX;
                 if(x*x + y*y <= 1)
                         circle ++;
         }
