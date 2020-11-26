@@ -13,7 +13,7 @@ int main(int argc, char **argv)
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
   // TODO: Get the rank of the process
   int world_rank;
-  MPI_Comm_rank(MPI_CPMM_WORLD, &world_rank);
+  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   // Get the name of the processor
   char processor_name[MPI_MAX_PROCESSOR_NAME];
   int name_len;
