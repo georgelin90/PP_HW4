@@ -18,19 +18,22 @@ int main(int argc, char **argv)
     // TODO: MPI init
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-    srand(time(NULL));
+    unsigned int seed[20];
+    for(int i= 1; i< world_size; i++)
+        seed[i] = world_rank;
+    seed[0] = world_size;
     for(int i = 0; i < tosses/world_size; i++)
         {
-            double x = (double) rand()/RAND_MAX;
-            double y = (double) rand()/RAND_MAX;
+            double x = (double) rand_r(&seed[world_rank])/RAND_MAX;
+            double y = (double) rand_r(&seed[world_rank])/RAND_MAX;
             if(x*x + y*y <= 1)
                         circle ++;
         }
 
     // TODO: binary tree redunction
-    for(int i = 1; i <= log(world_size); i *= 2)
+    for(int i = 2; i <= world_size; i *= 2)
     {
-	    if(world_rank % i == 1)
+	    if(world_rank % i == i/2)
 		    MPI_Send(&circle, 1, MPI_LONG_LONG, world_rank - i/2, 0, MPI_COMM_WORLD);
 	    else if(world_rank % i == 0){
 		    MPI_Recv(&temp, 1, MPI_LONG_LONG, world_rank + i/2, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);

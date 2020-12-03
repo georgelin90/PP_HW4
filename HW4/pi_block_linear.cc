@@ -15,17 +15,18 @@ int main(int argc, char **argv)
     long long int tosses = atoi(argv[1]);
     int world_rank, world_size;
     // ---
-
+    unsigned int seed;
+    double d = 1 / RAND_MAX;
     // TODO: init MPI
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
     if (world_rank > 0)
     {
-	srand(time(NULL));
+	seed = (unsigned int)world_rank;
 	for(int i = 0; i < tosses/world_size; i++)
 	{
-		double x = (double) rand()/RAND_MAX;
-		double y = (double) rand()/RAND_MAX;
+		double x = (double) rand_r(&seed)/RAND_MAX;
+		double y = (double) rand_r(&seed)/RAND_MAX;
 		if(x*x + y*y <= 1)
 			circle ++;
         }
@@ -35,11 +36,11 @@ int main(int argc, char **argv)
     else if (world_rank == 0)
     {
         // TODO: master
-	srand(time(NULL));
+	seed = (unsigned int)world_size;
         for(int i = 0; i < tosses/world_size; i++)
         {
-                double x = (double) rand()/RAND_MAX;
-                double y = (double) rand()/RAND_MAX;
+                double x = (double) rand_r(&seed)/RAND_MAX;
+                double y = (double) rand_r(&seed)/RAND_MAX;
                 if(x*x + y*y <= 1)
                         circle ++;
         }
